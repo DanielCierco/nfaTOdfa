@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 /**
- * Transition
+ * Transition\
  */
 public class Transition {
     private State to;

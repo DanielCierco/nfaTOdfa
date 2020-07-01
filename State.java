@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class State {
     boolean isFinal;
@@ -8,13 +9,13 @@ public class State {
     public State(String name){
         this.name = name;
         this.isFinal = false;
-        List<Transition> transitions = new List<Transitions>();
+        List<Transition> transitions = new ArrayList<Transitions>();
     }
 
     public State(String name, boolean isFinal){
         this.name = name;
         this.isFinal = isFinal;
-        List<Transition> transitions = new List<Transitions>();
+        List<Transition> transitions = new ArrayList<Transitions>();
     }
 
     public void addTransition(Transition x){

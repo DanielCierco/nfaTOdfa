@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 public class State {
@@ -9,7 +10,7 @@ public class State {
     public State(String name){
         this.name = name;
         this.isFinal = false;
-        List<Transition> transitions = new ArrayList<Transition>();
+        this.transitions = new ArrayList<Transition>();
     }
 
     public State(String name, List<Transition> transitions){
@@ -27,13 +28,15 @@ public class State {
     public State(String name, boolean isFinal){
         this.name = name;
         this.isFinal = isFinal;
-        List<Transition> transitions = new ArrayList<Transition>();
+        this.transitions = new ArrayList<Transition>();
     }
 
     public void addTransition(Transition t){
-        if(!this.transitions.contains(t)){
-            this.transitions.add(t);
-        }
+        this.transitions.add(t);
+    }
+
+    public void removeTransitions(char c){
+        this.transitions.removeIf(p -> p.getSymbol() == c);
     }
 
     public String getName(){
@@ -44,16 +47,61 @@ public class State {
         this.isFinal = true;
     }
 
-    public State getTransition(Character c){
+    public List<State> getTransition(char c){
+        List<State> states = new ArrayList<>();
         for(Transition t: this.transitions){
             if(t.getSymbol() == c){
-                t.getTo();
+                states.add(t.getTo());
             }
         }
-        return null;
+        return states;
+    }
+
+    public List<Transition> getTransitions(){
+        return this.transitions;
     }
 
     public boolean isFinal(){
         return this.isFinal;
     }
+
+    public String getAllTransitions(){
+        String resp = "";
+        if(this.transitions!=null){
+            for (Transition t : this.transitions) {
+                resp = resp.concat("("+ t.getTo().getName()  + ", " + t.getSymbol() + "), ");
+            }
+            return "Transicoes de " + this.getName() + " : " +resp.substring(0, resp.lastIndexOf(","));
+        }
+        return "nada";
+    }
+
+    public State transite(char c){
+        for (Transition transition : this.transitions) {
+            System.out.println("simbolo: "+ c + " Simbolo dessa transição: "+ transition.getSymbol());
+            if(transition.getSymbol() == c){
+                System.out.println(transition.getTo());
+                return transition.getTo();
+            }
+        }
+        return null;
+    }
+
+    public void addAll(List<Transition> list){
+        for (Transition t : list) {
+            this.transitions.add(t);
+        }
+    }
+
+    public boolean hasTransition(){
+        return (this.transitions == null);
+    }
+
+    @Override
+    public String toString(){
+        List<String> aux = this.transitions.stream().map(p -> p.toString()).collect(Collectors.toList());
+        return "\nNome do Estado: " + this.name + "\nTransicoes: " + aux.toString() + "\n";
+    }
+
+
 }

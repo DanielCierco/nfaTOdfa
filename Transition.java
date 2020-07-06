@@ -1,18 +1,9 @@
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Transition\
  */
 public class Transition {
     private State to;
     private char symbol;
-
-    public Transition(State to, char symbol, boolean isVoid){
-        this.to = to;
-        this.symbol = symbol;
-    }
 
     public Transition(State to, char symbol){
         this.to = to;
@@ -29,5 +20,14 @@ public class Transition {
 
     public State getTo(){
         return this.to;
+    }
+
+    public void setTo(State to) {
+        this.to = to;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + to.getName() + ", " + this.symbol + ")";
     }
 }

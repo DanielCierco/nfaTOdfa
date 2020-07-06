@@ -6,13 +6,21 @@ import java.util.Scanner;
 public class App {
     public static void main(String[] args) {
         Scanner read = new Scanner(System.in);
-        System.out.printf("Informe o nome de arquivo texto:\n");
-        String filename = read.nextLine();
-        generateAutomata(filename);
- 
+        System.out.printf("Informe o nome de arquivo texto:  ");
+        String inputx = read.nextLine();
+        Automata nfa = generateAutomata(inputx);
+        Automata dfa = nfa.toDfa();
+        System.out.println(dfa.toString());
+        
+        //System.out.println(dfa.getState("q1").transite('D'));
+        //System.out.println(dfa.getStates().size());
+        System.out.println("\n\nGostaria de testar o modelo deterministico? ");
+        inputx = read.nextLine();
+        teste(inputx, dfa);
+        read.close();
     }
 
-    public static void generateAutomata(String name){
+    public static Automata generateAutomata(String name){
         try {
             FileReader txt = new FileReader(name);
             BufferedReader readTxt = new BufferedReader(txt);
@@ -66,18 +74,52 @@ public class App {
                 }
                 index = i;
             }
-
-            System.out.println(automata.toString());
             
-            //while (line != null) {
-                //line = readTxt.readLine(); // lê da segunda até a última line
-            //}
+            while (line != null) {
+                line = readTxt.readLine();
+                if(line!=null){
+                    if(line.contains("(")){
+                        splitedLine = line.split("=");
+                        splitedLine[0] = splitedLine[0].substring(splitedLine[0].indexOf("(")+1, splitedLine[0].indexOf(")"));
+                        String[] from = splitedLine[0].split(",");
+                        automata.getState(from[0]).addTransition(new Transition(automata.getState(splitedLine[1].trim()), from[1].trim().charAt(0)));
+                    }
+                }
+            }
             txt.close();
+            return automata;
         } 
+
+
     
         catch (IOException e) {
             System.err.printf("Erro na abertura do arquivo: %s.\n",
             e.getMessage());
+            return null;
         }
+
+        
+    }
+
+    public static void teste(String resp, Automata toTest){
+        Scanner read = new Scanner(System.in);
+        System.out.println(toTest.toString());
+        switch (resp) {
+            case "s": case "S":
+                System.out.println("\n Digite a palavra a ser testada: ");
+                System.out.println(toTest.test(read.nextLine()));
+                System.out.println("Gostaria de testar outra palavra? ");
+                teste(read.nextLine(), toTest);
+                break;
+        
+            case "n": case "N":
+                System.out.println("Encerrando programa...");
+                break;
+            default:
+                System.out.println("resposta inválida\n\n");
+                teste(resp, toTest);
+                break;
+        }
+        read.close();
     }
 }

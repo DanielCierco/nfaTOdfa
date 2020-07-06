@@ -59,7 +59,7 @@ public class Automata {
     public boolean test(String input){
         State actual = this.initial;
         for(char c: input.toCharArray()){
-            System.out.println("estado atual: " + actual.getName() + "    simbolo atual: " + c);
+            //ystem.out.println("estado atual: " + actual.getName() + "    simbolo atual: " + c);
             if(!containsSymbol(c)){
                 return false;
             }

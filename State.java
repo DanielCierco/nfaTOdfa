@@ -78,9 +78,9 @@ public class State {
 
     public State transite(char c){
         for (Transition transition : this.transitions) {
-            System.out.println("simbolo: "+ c + " Simbolo dessa transição: "+ transition.getSymbol());
+            //System.out.println("simbolo: "+ c + " Simbolo dessa transição: "+ transition.getSymbol());
             if(transition.getSymbol() == c){
-                System.out.println(transition.getTo());
+                //System.out.println(transition.getTo());
                 return transition.getTo();
             }
         }

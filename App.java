@@ -103,7 +103,6 @@ public class App {
 
     public static void teste(String resp, Automata toTest){
         Scanner read = new Scanner(System.in);
-        System.out.println(toTest.toString());
         switch (resp) {
             case "s": case "S":
                 System.out.println("\n Digite a palavra a ser testada: ");
